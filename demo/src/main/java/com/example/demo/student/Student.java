@@ -24,6 +24,7 @@ public class Student {
             strategy = GenerationType.SEQUENCE)
     private long id;
     private String name;
+    private String email;
     @Enumerated(EnumType.STRING)
     private Gender gender;
 

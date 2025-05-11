@@ -24,6 +24,7 @@ import {getAllStudent, deleteStudent} from "./services/api.js";
 import {DeleteUser} from "./helpers/DeleteUser.jsx";
 import StudentDrawerForm from "./StudentDrawerForm.jsx";
 import './App.css'
+import {errorNotification} from "./Notification.jsx";
 
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -94,7 +95,12 @@ function App() {
                             console.log(data);
                             setStudents(data);
                             setFetching(false);
+                    }).catch(err =>{
+                    console.log(err.response);
+                    err.response.json().then(res => {
+                           errorNotification("There was an error!", `${res.message} Status code: ${res.status}, Cause: ${res.error}`)
                     })
+                }).finally(() => {setFetching(false)})
         }
 
         useEffect(() => {
@@ -163,6 +169,11 @@ function App() {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
+        },
+        {
+            title: 'Email',
+            dataIndex: 'email',
+            key: 'email',
         },
         {
             title: 'Gender',

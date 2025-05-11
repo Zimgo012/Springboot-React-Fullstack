@@ -27,6 +27,7 @@ public class StudentService {
         Student oldStudent = studentRepository.findById(studentId).get();
         oldStudent.setName(student.getName());
         oldStudent.setGender(student.getGender());
+        oldStudent.setEmail(student.getEmail());
         studentRepository.save(oldStudent);
     }
 }

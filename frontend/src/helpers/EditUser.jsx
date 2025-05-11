@@ -111,6 +111,17 @@ const EditUser = ({ showEditDrawer, setShowEditDrawer, fetchStudents, student })
                         </Form.Item>
                     </Col>
                 </Row>
+                <Row gutter={16}>
+                    <Col span={12}>
+                        <Form.Item
+                            name="email"
+                            label="Email"
+                            rules={[{ required: true, message: "Please enter and email address" }]}
+                        >
+                            <Input placeholder="Enter email address"/>
+                        </Form.Item>
+                    </Col>
+                </Row>
             </Form>
         </Drawer>
     );
