@@ -24,3 +24,17 @@ export const addNewStudent = (student) =>
         },
         body: JSON.stringify(student)
     })
+
+export const deleteStudent = (id) =>
+    fetch(`api/v1/students/${id}`, {
+        method: "DELETE",
+    }).then(checkStatus);
+
+export const updateStudent = (id, student) =>
+    fetch(`api/v1/students/${id}`, {
+        method: "PUT",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(student)
+    })

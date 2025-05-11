@@ -18,4 +18,15 @@ public class StudentService {
     public void addStudent(Student student) {
         studentRepository.save(student);
     }
+
+    public void deleteStudent(Long studentId) {
+        studentRepository.deleteById(studentId);
+    };
+
+    public void editStudent(Long studentId, Student student) {
+        Student oldStudent = studentRepository.findById(studentId).get();
+        oldStudent.setName(student.getName());
+        oldStudent.setGender(student.getGender());
+        studentRepository.save(oldStudent);
+    }
 }
