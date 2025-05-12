@@ -1,5 +1,7 @@
 package com.example.demo.student;
 
+import com.example.demo.student.exeptions.BadRequestException;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +23,7 @@ public class StudentController {
     };
 
     @PostMapping
-    public void addStudent(@RequestBody Student student) {
+    public void addStudent(@Valid @RequestBody Student student) throws BadRequestException {
         studentService.addStudent(student);
     }
 

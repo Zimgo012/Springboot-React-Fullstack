@@ -18,26 +18,38 @@ const StudentDrawerForm = ({ showDrawer, setShowDrawer, fetchStudents }) => {
     const onSubmit = async (student) => {
         setSubmitting(true); // Start spinner
         try {
-            console.log(student); // Log the student data
-            await addNewStudent(student); // Call the API to add the student
-            fetchStudents(); // Fetch updated list of students
+            console.log("Submitting student data:", student); // Log the submitted student data for debugging
 
-            // Show success notification
+            // Call the API to add a student
+            const response = await addNewStudent(student);
+
+            // Check if the API response is not successful
+            if (!response.ok) {
+                const errorBody = await response.json(); // Parse the error details
+                throw new Error(
+                    `Error: ${errorBody.message || "Unknown Error"} - Status: ${response.status}`
+                );
+            }
+
+            // If the API call is successful (response.ok is true)
             successNotification(
                 "Student added successfully",
                 `${student.name} has been added successfully`
             );
 
-            setShowDrawer(false); // Close the drawer on success
-            form.resetFields(); // Reset form
-        } catch (err) {
-            console.error(err);
+            fetchStudents(); // Refresh the student list
+            form.resetFields(); // Reset the form fields
+            setShowDrawer(false); // Close the drawer
+
+        } catch (error) {
+            // Notify the user about the error
             errorNotification(
                 "Failed to add student",
-                `An error occurred while adding ${student.name}. Please try again later.`
+                `${error.message}. Please try again.`,
+                "bottomLeft"
             );
         } finally {
-            setSubmitting(false); // Stop spinner
+            setSubmitting(false); // Stop the spinner in all cases
         }
     };
 

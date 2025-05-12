@@ -80,8 +80,11 @@ function App() {
         deleteStudent(id).then(() => {
             message.success(`User with ID ${id} has been successfully deleted.`);
             callback();
-        }).catch(() => {
-            message.error(`Failed to delete user with ID ${id}`);
+        }).catch((res) => {
+            errorNotification(
+                "There was an error!",
+                `${res.message} Status code: ${res.status}, Cause: ${res.error}`,
+                "bottomLeft")
         });
 
 
@@ -99,7 +102,7 @@ function App() {
                     console.log(err.response);
                     err.response.json().then(res => {
                            errorNotification("There was an error!", `${res.message} Status code: ${res.status}, Cause: ${res.error}`)
-                    })
+                    });
                 }).finally(() => {setFetching(false)})
         }
 
