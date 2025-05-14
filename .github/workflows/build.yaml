@@ -33,4 +33,5 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: 'temurin' # Specify a distribution (e.g., temurin for Eclipse Adoptium)
       - name: Maven Clean Package
-        run: ./demo/mvnw --no-transfer-progress clean package -P build-frontend
+        working-directory: demo
+        run: ./mvnw --no-transfer-progress clean package -P build-frontend
