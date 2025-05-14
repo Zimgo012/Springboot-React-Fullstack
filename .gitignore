@@ -1,0 +1,17 @@
+# Java/Spring Boot
+target/
+*.jar
+*.war
+.classpath
+.project
+.settings/
+.idea/
+*.iml
+
+# Node.js/React
+node_modules/
+dist/
+build/
+
+# Environment files
+.env
