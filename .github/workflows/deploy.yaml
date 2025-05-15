@@ -92,10 +92,11 @@ jobs:
       - uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
-          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-          text: 'Deployment started... :grimacing: :crossed_fingers:'
+          fields: repo, message, commit, author, action, eventName, ref, workflow, job, took
+          text: ':white_check_mark: Deployment starting'
+          
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${1 secrets.SLACK_WEBHOOK_URL }}
 
           
       - name: Beanstalk Deploy
