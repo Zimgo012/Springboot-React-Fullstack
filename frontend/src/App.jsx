@@ -16,7 +16,7 @@ import {
     Space,
     Tag,
     Avatar,
-    message
+    message, Divider
 } from 'antd';
 import { useState, useEffect } from 'react';
 
@@ -236,7 +236,10 @@ function App() {
                 </Layout>
             </div>
             <Footer style={{ textAlign: 'center', postion: 'relative', marginTop: '100px', height: '25px' }}>
-                Ant Design ©{new Date().getFullYear()} Created by Ant UED
+                Ant Design ©{new Date().getFullYear()} Created by John Rycca Belcina
+                <Divider>
+                    <a href="https://github.com/Zimgo012/Springboot-React-Fullstack" target= "_blank"> Github Repo Link</a>
+                </Divider>
             </Footer>
         </Layout>
   )
