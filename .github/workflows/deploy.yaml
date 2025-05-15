@@ -93,7 +93,7 @@ jobs:
         with:
           status: ${{ job.status }}
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-          text: ':elasticbeanstalk: :aws: Deployment started... :grimacing: :crossed_fingers:'
+          text: 'Deployment started... :grimacing: :crossed_fingers:'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
