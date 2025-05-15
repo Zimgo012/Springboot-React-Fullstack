@@ -21,7 +21,7 @@ env:
   AWS_REGION: ca-central-1
   EB_ENVIRONMENT_NAME: Springboot-React-Fullstack-env
   EB_APPLICATION_NAME: Springboot-React-Fullstack
-  EB_DEPLOYMENT_PACKAGE: elasticbeanstalk/docker-compose.yml
+  EB_DEPLOYMENT_PACKAGE: demo/elasticbeanstalk/docker-compose.yml
 
 jobs:
   build:
@@ -81,12 +81,12 @@ jobs:
       - name: Update and commit app version in docker-compose.yml
         run: |
           BUILD_NUMBER=${{steps.build-number.outputs.BUILD_NUMBER}}
-          echo -e "Current demo/elasticbeanstalk/docker-compose.yml\n$(cat elasticbeanstalk/docker-compose.yml)"
+          echo -e "Current demo/elasticbeanstalk/docker-compose.yml\n$(cat demo/elasticbeanstalk/docker-compose.yml)"
           sed -i -E "s_(zimgo1012/springboot-react-fullstack:)([^ ]*)_\1${BUILD_NUMBER}_" demo/elasticbeanstalk/docker-compose.yml
           echo -e "Updated demo/elasticbeanstalk/docker-compose.yml\n$(cat demo/elasticbeanstalk/docker-compose.yml)"
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add elasticbeanstalk/docker-compose.yml
+          git add demo/elasticbeanstalk/docker-compose.yml
           git commit -m "new app version: ${BUILD_NUMBER}"
           git push
 
