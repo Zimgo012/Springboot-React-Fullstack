@@ -69,18 +69,19 @@ jobs:
       - name: Maven Clean Package and Push To DockerHub
         working-directory: demo
         run: ./mvnw --no-transfer-progress clean package -P build-frontend -P jib-push-to-dockerhub -Dapp.image.tag=${{steps.build-number.outputs.BUILD_NUMBER}}
+      
       - uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
           fields: repo, message, commit, author, action, eventName, ref, workflow, job, took
-          text: ':white_check_mark: pushed zimgo1012/springboot-react-fullstack:${{steps.build-number.output
+          text: ':white_check_mark: pushed zimgo1012/springboot-react-fullstack:${{steps.build-number.outputs.BUILD_NUMBER}}'
         env:
-          SLACK_WEBHOOK_URL: ${1 secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         
       - name: Update and commit app version in docker-compose.yml
         run: |
           BUILD_NUMBER=${{steps.build-number.outputs.BUILD_NUMBER}}
-          echo -e "Current elasticbeanstalk/docker-compose.yml\n$(cat elasticbeanstalk/docker-compose.yml
+          echo -e "Current elasticbeanstalk/docker-compose.yml\n$(cat elasticbeanstalk/docker-compose.yml)"
           sed -i -E "s_(zimgo1012/springboot-react-fullstack:)([^ ]*)_\1${BUILD_NUMBER}_" elasticbeanstalk/docker-compose.yml
           echo -e "Updated elasticbeanstalk/docker-compose.yml\n$(cat elasticbeanstalk/docker-compose.yml)"
           git config user.name github-actions
