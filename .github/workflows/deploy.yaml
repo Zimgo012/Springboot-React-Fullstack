@@ -103,27 +103,27 @@ jobs:
 
       - name: Prepare deployment package
         run: |
+          # List directory contents for debugging
+          echo "Listing repository root:"
+          ls -la
+          echo "Listing demo/elasticbeanstalk:"
+          ls -la demo/elasticbeanstalk || echo "demo/elasticbeanstalk not found"
+          echo "Searching for docker-compose files:"
+          find . -name "docker-compose.*"
           # Verify source file exists
-          if [ ! -f demo/elasticbeanstalk/docker-compose.yml ]; then
-            echo "Error: demo/elasticbeanstalk/docker-compose.yml not found"
+          if [ ! -f demo/elasticbeanstalk/docker-compose.yaml ]; then
+            echo "Error: demo/elasticbeanstalk/docker-compose.yaml not found"
             exit 1
           fi
           mkdir -p deploy
-          cp demo/elasticbeanstalk/docker-compose.yml deploy/docker-compose.yml
+          cp demo/elasticbeanstalk/docker-compose.yaml deploy/docker-compose.yml
           cd deploy
           zip -r ../deployment.zip .
           # Debug ZIP contents
+          echo "ZIP contents:"
           unzip -l ../deployment.zip
         env:
           BUILD_NUMBER: ${{ steps.build-number.outputs.BUILD_NUMBER }}
-
-      - uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-          text: ':white_check_mark: Deployment starting'
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           
       - name: Beanstalk Deploy
         uses: einaregilsson/beanstalk-deploy@ebe3476a4ce991d54336935e75e78dd9d86f9408
