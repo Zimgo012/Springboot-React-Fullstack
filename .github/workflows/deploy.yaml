@@ -101,43 +101,6 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
-      - name: Prepare deployment package
-        run: |
-          # List directory contents for debugging
-          echo "Listing repository root:"
-          ls -la
-          echo "Listing demo/elasticbeanstalk:"
-          ls -la demo/elasticbeanstalk || echo "demo/elasticbeanstalk not found"
-          echo "Searching for docker-compose files:"
-          find . -name "docker-compose.*"
-          # Create Dockerrun.aws.json for single-container Docker
-          mkdir -p deploy
-          echo '{
-            "AWSEBDockerrunVersion": "1",
-            "Image": {
-              "Name": "zimgo1012/springboot-react-fullstack:${{ steps.build-number.outputs.BUILD_NUMBER }}",
-              "Update": "true"
-            },
-            "Ports": [
-              {
-                "ContainerPort": 8080,
-                "HostPort": 80
-              }
-            ],
-            "Environment": [
-              {
-                "Name": "SPRING_PROFILES_ACTIVE",
-                "Value": "dev"
-              }
-            ]
-          }' > deploy/Dockerrun.aws.json
-          cd deploy
-          zip -r ../deployment.zip .
-          # Debug ZIP contents
-          echo "ZIP contents:"
-          unzip -l ../deployment.zip
-        env:
-          BUILD_NUMBER: ${{ steps.build-number.outputs.BUILD_NUMBER }}
           
       - name: Beanstalk Deploy
         uses: einaregilsson/beanstalk-deploy@v22
