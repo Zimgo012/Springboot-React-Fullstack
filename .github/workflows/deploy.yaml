@@ -88,6 +88,8 @@ jobs:
           git config user.email github-actions@github.com
           git add demo/elasticbeanstalk/docker-compose.yaml
           git commit -m "new app version: ${BUILD_NUMBER}"
+          git fetch origin main
+          git rebase origin/main
           git push
 
       - uses: 8398a7/action-slack@v3
