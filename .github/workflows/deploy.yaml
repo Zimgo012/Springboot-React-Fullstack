@@ -78,15 +78,15 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         
-      - name: Update and commit app version in docker-compose.yml
+      - name: Update and commit app version in docker-compose.yaml
         run: |
           BUILD_NUMBER=${{steps.build-number.outputs.BUILD_NUMBER}}
           echo -e "Current demo/elasticbeanstalk/docker-compose.yml\n$(cat demo/elasticbeanstalk/docker-compose.yml)"
-          sed -i -E "s_(zimgo1012/springboot-react-fullstack:)([^ ]*)_\1${BUILD_NUMBER}_" demo/elasticbeanstalk/docker-compose.yml
-          echo -e "Updated demo/elasticbeanstalk/docker-compose.yml\n$(cat demo/elasticbeanstalk/docker-compose.yml)"
+          sed -i -E 's_(zimgo1012/springboot-react-fullstack:)([^"]*)_\1'${BUILD_NUMBER}'_' demo/elasticbeanstalk/docker-compose.yml
+          echo -e "Current demo/elasticbeanstalk/docker-compose.yml\n$(cat demo/elasticbeanstalk/docker-compose.yml)"
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add demo/elasticbeanstalk/docker-compose.yml
+          git add elasticbeanstalk/docker-compose.yml
           git commit -m "new app version: ${BUILD_NUMBER}"
           git fetch origin main
           git rebase origin/main
@@ -100,25 +100,18 @@ jobs:
           
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-      
-      - name: Prepare Deployment
-        run: |
-          mkdir -p deploy
-          cp demo/elasticbeanstalk/docker-compose.yml deploy/  # Ensure this is .yml (not .yaml)
-          cd deploy
-          zip -r ../deploy.zip ./*
           
       - name: Beanstalk Deploy
-        uses: einaregilsson/beanstalk-deploy@v22
+        uses: einaregilsson/beanstalk-deploy@ebe3476a4ce991d54336935e75e78dd9d86f9408
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          region: ${{env.AWS_REGION }}
+          region: ${{ env.AWS_REGION }}
           environment_name: ${{ env.EB_ENVIRONMENT_NAME }}
           application_name: ${{ env.EB_APPLICATION_NAME }}
-          deployment_package: deploy.zip # ${{ env.EB_DEPLOYMENT_PACKAGE }}
+          deployment_package: ${{ env.EB_DEPLOYMENT_PACKAGE }}
           version_label: ${{ steps.build-number.outputs.BUILD_NUMBER }}
-          version_description: Version ${{ steps.build-number.outputs.BUILD_NUMBER }} deployed via github action
+          version_description: Version ${{steps.build-number.outputs.BUILD_NUMBER}} deployed via github actions ${{ github.sha }}
           wait_for_deployment: 60
 
       - uses: 8398a7/action-slack@v3
