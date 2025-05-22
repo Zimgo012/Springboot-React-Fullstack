@@ -1,6 +1,6 @@
 services:
   backend:
-    image: "zimgo1012/springboot-react-fullstack:19.5.2025.22.18.51
+    image: "zimgo1012/springboot-react-fullstack:22.5.2025.18.21.48
     ports:
       - "80:8080"
     restart: "always"
