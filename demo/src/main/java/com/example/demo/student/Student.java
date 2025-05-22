@@ -37,8 +37,9 @@ public class Student {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    public Student(String name, Gender gender) {
+    public Student(String name, Gender gender, String email) {
         this.name = name;
         this.gender = gender;
+        this.email = email;
     }
 }
